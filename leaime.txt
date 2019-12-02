@@ -1,0 +1,10 @@
+Sequencia das colunas de dados nos arquivos:
+Dia
+Mês
+Ano
+Hora
+Velocidade 
+Direção
+Temperatura
+Umidade 
+Pressão
