@@ -2,32 +2,32 @@ import pandas as pd
 
 from datetime import datetime
 
+__all__ = ["train_data", "test_data"]
+
 f = pd.ExcelFile("./Mucuri_novo_semNaN_torre150m.xlsx")
 
 df = f.parse("Dados anemo")
 
-train_data_1 = df[pd.to_datetime(df["Data"]) <= datetime(year=2015, month=12, day=22)]
-train_data_2 = df[
+_train_data_1 = df[pd.to_datetime(df["Data"]) <= datetime(year=2015, month=12, day=22)]
+_train_data_2 = df[
     (pd.to_datetime(df["Data"]) == datetime(year=2015, month=12, day=23))
     & (df["hora"] <= 11)
 ]
 
-train_data = pd.concat([train_data_1, train_data_2])
+X_train = pd.concat([_train_data_1, _train_data_2]).drop("Data", axis=1)
+Y_train = X_train.v_anemo2.shift(-1)
 
-test_data_1 = df[
+_test_data_1 = df[
     (pd.to_datetime(df["Data"]) == datetime(year=2015, month=12, day=23))
     & (df["hora"] >= 12)
 ]
-test_data_2 = df[
+_test_data_2 = df[
     (pd.to_datetime(df["Data"]) >= datetime(year=2015, month=12, day=24))
     & (pd.to_datetime(df["Data"]) <= datetime(year=2015, month=12, day=30))
 ]
-test_data_3 = df[
+_test_data_3 = df[
     (pd.to_datetime(df["Data"]) == datetime(year=2015, month=12, day=31))
     & (df["hora"] <= 13)
 ]
 
-test_data = pd.concat([test_data_1, test_data_2, test_data_3])
-
-print(train_data)
-print(test_data)
+test_data = pd.concat([_test_data_1, _test_data_2, _test_data_3]).drop("Data", axis=1)
